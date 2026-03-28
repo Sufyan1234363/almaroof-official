@@ -1,0 +1,174 @@
+╔══════════════════════════════════════════════════════════════╗
+║        AL MAROOF — Convert to Android APK                   ║
+║        Using Capacitor (Official Method)                    ║
+╚══════════════════════════════════════════════════════════════╝
+
+This guide turns your app.html into a real Android APK that
+users can install on their phones — just like an app from
+Google Play Store.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+WHAT YOU NEED ON YOUR COMPUTER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. Node.js (v18+)      → https://nodejs.org
+2. Android Studio      → https://developer.android.com/studio
+3. Java JDK 17         → https://adoptium.net
+4. A computer (Windows, Mac, or Linux)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 1 — SETUP PROJECT FOLDER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Create a folder called "almaroof-app" on your computer.
+
+Inside it, create this structure:
+  almaroof-app/
+  ├── www/
+  │   └── index.html     ← rename your app.html to index.html
+  ├── package.json
+  └── capacitor.config.json
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 2 — CREATE package.json
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Create a file named package.json with this content:
+
+{
+  "name": "almaroof",
+  "version": "1.0.0",
+  "description": "Al Maroof — Your Trusted Digital Services",
+  "dependencies": {
+    "@capacitor/android": "^6.0.0",
+    "@capacitor/core": "^6.0.0",
+    "@capacitor/cli": "^6.0.0"
+  }
+}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 3 — CREATE capacitor.config.json
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Create capacitor.config.json:
+
+{
+  "appId": "com.almaroof.app",
+  "appName": "Al Maroof",
+  "webDir": "www",
+  "server": {
+    "url": "https://yourdomain.com",
+    "cleartext": false
+  },
+  "android": {
+    "allowMixedContent": false,
+    "backgroundColor": "#0A0A0A",
+    "overrideUserAgent": "AlMaroofApp/1.0"
+  }
+}
+
+NOTE: Change "url" to your live domain (e.g. https://almaroof.com.ng)
+      This makes the app load your live website inside the APK.
+      Users always get the latest version without updating the APK!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 4 — RUN THESE COMMANDS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Open your terminal/command prompt inside the almaroof-app folder:
+
+  # Install dependencies
+  npm install
+
+  # Initialize Capacitor
+  npx cap init "Al Maroof" "com.almaroof.app" --web-dir www
+
+  # Add Android platform
+  npx cap add android
+
+  # Sync files
+  npx cap sync android
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 5 — CUSTOMIZE THE APP IN ANDROID STUDIO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # Open in Android Studio
+  npx cap open android
+
+In Android Studio:
+  1. Wait for Gradle to finish loading (2-3 mins)
+  2. Add your app icon:
+     - Right-click "res" folder → New → Image Asset
+     - Upload your Al Maroof logo
+     - Android Studio generates all icon sizes automatically
+  3. Change splash screen color:
+     - Open: res/values/styles.xml
+     - Set background to #0A0A0A (dark)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 6 — BUILD THE APK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+In Android Studio:
+  1. Click "Build" in top menu
+  2. Click "Build Bundle(s) / APK(s)"
+  3. Click "Build APK(s)"
+  4. Wait ~3 minutes
+  5. Click "locate" when done
+
+Your APK will be at:
+  android/app/build/outputs/apk/debug/app-debug.apk
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 7 — TEST ON YOUR PHONE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. Transfer app-debug.apk to your Android phone via WhatsApp or USB
+2. On phone: Settings → Security → Allow Unknown Sources
+3. Open the APK file → Install
+4. Open "Al Maroof" from your home screen
+5. Test everything works
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 8 — RELEASE APK (for sharing with users)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+For a SIGNED release APK (required for Google Play):
+  1. Build → Generate Signed Bundle/APK
+  2. Create a new keystore (save the password safely!)
+  3. Build Release APK
+  4. Share via WhatsApp, Telegram, or your website
+
+To share directly (without Google Play):
+  - Upload APK to Google Drive
+  - Share download link via WhatsApp to your customers
+  - They download and install it
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+OPTIONAL — PUBLISH ON GOOGLE PLAY STORE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. Go to: https://play.google.com/console
+2. Pay one-time $25 registration fee
+3. Upload your signed APK/AAB
+4. Fill in app details and screenshots
+5. Submit for review (takes 1-3 days)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+IMPORTANT NOTES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ The APK loads your LIVE website — so updates to your app
+   happen instantly without users needing to update the APK
+
+✅ Users need internet to use the app (it's a web wrapper)
+
+✅ The APK file size will be very small (~3-5MB)
+
+✅ Works on Android 6.0 and above (covers 99% of phones)
+
+❌ This method does NOT work for iOS/iPhone without a Mac
+   and Apple Developer account ($99/year)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FASTER ALTERNATIVE — No computer needed
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Use https://gonative.io or https://appmaker.xyz
+  1. Enter your website URL
+  2. They build the APK for you online
+  3. Download and share
+  Cost: ~$49 one-time
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Built with Claude AI — claude.ai
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

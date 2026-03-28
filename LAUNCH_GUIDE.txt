@@ -1,0 +1,166 @@
+# ╔══════════════════════════════════════════════════════╗
+# ║      AL MAROOF — LAUNCH GUIDE (Step by Step)        ║
+# ╚══════════════════════════════════════════════════════╝
+
+## WHAT YOU HAVE
+- app.html        → Your mobile web app (frontend)
+- server.js       → Node.js backend (API)
+- almaroof.sql    → MySQL database structure
+- .env.example    → Configuration template
+- package.json    → Node.js dependencies
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+## STEP 1 — GET A DOMAIN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. Go to: https://www.namecheap.com
+2. Search for: almaroof.com.ng  (Nigerian domain ~₦3,000/yr)
+   OR:         almaroof.ng
+3. Buy it and keep the login details safe
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+## STEP 2 — GET HOSTING (Railway.app — FREE to start)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. Go to:  https://railway.app
+2. Sign up with GitHub
+3. Click "New Project" → "Deploy from GitHub repo"
+4. Upload your files to a GitHub repo first:
+   - Create account at https://github.com
+   - Create new repo named "almaroof"
+   - Upload: server.js, package.json, almaroof.sql, public/index.html
+
+5. In Railway, add a MySQL database:
+   - Click "+ New" → "Database" → "MySQL"
+   - Copy the DATABASE_URL it gives you
+
+6. Set environment variables in Railway:
+   - Click your project → "Variables" tab
+   - Add all variables from .env.example
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+## STEP 3 — SETUP DATABASE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+In Railway MySQL:
+1. Click your MySQL service → "Connect" tab
+2. Use the MySQL CLI connection string shown
+3. Run: mysql -h HOST -u USER -p DATABASE < almaroof.sql
+   (Or use a GUI like TablePlus or DBeaver)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+## STEP 4 — REGISTER PAYSTACK (Payment Gateway)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. Go to: https://paystack.com
+2. Click "Create free account"
+3. Fill in your business details (Al Maroof)
+4. Go to Settings → API Keys & Webhooks
+5. Copy your:
+   - Public Key  → PAYSTACK_PUBLIC_KEY in .env
+   - Secret Key  → PAYSTACK_SECRET_KEY in .env
+6. Set Webhook URL to:
+   https://yourdomain.com/api/paystack/webhook
+
+IMPORTANT — To receive real money:
+- Submit your CAC documents to Paystack
+- Or start with test mode first
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+## STEP 5 — REGISTER VTPASS (Data/Airtime/Bills)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. Go to: https://vtpass.com
+2. Click "Register" → fill business details
+3. Login → Go to Settings → API
+4. Copy your:
+   - Username/Email → VTPASS_USER in .env
+   - Password       → VTPASS_PASS in .env
+5. Fund your VTPass wallet (minimum ₦5,000 to start)
+6. Test in sandbox first: set VTPASS_ENV=sandbox
+
+VTPass ServiceIDs (already configured in server.js):
+- MTN Data:    mtn-data
+- Airtel Data: airtel-data
+- Glo Data:    glo-data
+- 9mobile:     etisalat-data
+- EKEDC:       eko-electric
+- IKEDC:       ikeja-electric
+- DSTV:        dstv
+- GOtv:        gotv
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+## STEP 6 — SETUP EMAIL (Gmail)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. Create Gmail: almaroof.vtu@gmail.com
+2. Go to: https://myaccount.google.com/security
+3. Enable 2-Step Verification
+4. Go to: https://myaccount.google.com/apppasswords
+5. Create app password → copy it → SMTP_PASS in .env
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+## STEP 7 — SETUP SMS (Termii)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. Go to: https://termii.com
+2. Register → verify your account
+3. Go to Settings → API Key
+4. Copy key → TERMII_KEY in .env
+5. Fund your Termii balance (₦500 to start)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+## STEP 8 — UPDATE app.html
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+In app.html, find this line near the top of the <script>:
+  BASE_URL: 'https://your-api-domain.com/api'
+
+Change it to your actual Railway URL, e.g.:
+  BASE_URL: 'https://almaroof-production.up.railway.app/api'
+
+Also add your Paystack public key:
+  window.PAYSTACK_PUBLIC_KEY = 'pk_live_xxxxxxxxxxxx';
+
+Place app.html in the "public" folder and rename to index.html
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+## STEP 9 — TEST EVERYTHING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+□ Register a new user
+□ Login
+□ Deposit ₦100 with Paystack test card:
+  Card: 4084084084084081
+  CVV:  408
+  Date: 01/25
+□ Buy data to your phone number
+□ Pay electricity bill
+□ Check email for transaction alerts
+□ Check SMS alert
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+## STEP 10 — GO LIVE!
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+□ Switch Paystack from test → live keys
+□ Switch VTPASS_ENV from sandbox → live
+□ Change admin password immediately
+□ Point your domain to Railway URL
+□ Share your app link and start making money! 🚀
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+## YOUR PROFIT MARGINS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Service        | Buy Price | Sell Price | Margin
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+MTN 1GB        | ₦270      | ₦300       | ₦30
+MTN 2GB        | ₦450      | ₦500       | ₦50
+MTN 5GB        | ₦1,350    | ₦1,500     | ₦150
+Airtime (100)  | ₦97       | ₦100       | ₦3
+DSTV Compact   | ₦8,800    | ₦9,000     | ₦200
+Electricity    | pass-thru | +₦50-100   | ₦50-100
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+100 data subs/day × ₦50 avg profit = ₦5,000/day
+= ₦150,000/month 💰
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+## ADMIN LOGIN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Email:    admin@almaroof.com
+Password: Admin@123  ← CHANGE THIS IMMEDIATELY!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+## SUPPORT / QUESTIONS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Built with Claude AI at claude.ai

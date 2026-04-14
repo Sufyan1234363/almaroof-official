@@ -277,7 +277,7 @@ app.post('/api/auth/register', async (req, res) => {
     await db.query(
       `INSERT INTO users
          (name, email, phone, password, account_number, balance, is_verified, verify_token, verify_expires)
-       VALUES (?,?,?,?,?,0,0,?,?)`,
+       VALUES (?,?,?,?,?,1,1,?,?)`,
       [name, email, phone, hash, acctNo, verifyToken, verifyExp]
     );
 
@@ -310,7 +310,7 @@ app.post('/api/auth/register', async (req, res) => {
 
     success(res, {
       message: 'Account created! Please check your email to verify your account.',
-      requires_verification: true
+      requires_verification: false,
     }, 201);
   } catch (err) {
     console.error(err);

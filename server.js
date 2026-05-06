@@ -278,6 +278,7 @@ app.post('/api/auth/register', async (req, res) => {
       `INSERT INTO users
          (name, email, phone, password, account_number, balance, is_verified, verify_token, verify_expires)
        VALUES (?,?,?,?,?,1,1,?,?)`,
+       
       [name, email, phone, hash, acctNo, verifyToken, verifyExp]
     );
 
